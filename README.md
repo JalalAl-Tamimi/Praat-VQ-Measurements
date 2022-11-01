@@ -1,3 +1,5 @@
+To cite, use: [![DOI](https://zenodo.org/badge/515176455.svg)](https://zenodo.org/badge/latestdoi/515176455)
+
 To access scripts and supporting documents, download the whole repository from [here](https://github.com/JalalAl-Tamimi/Praat-VQ-Measurements). You can access it by clicking on "View on GitHub" on top.
 
 The script "VQ_measurements.praat" provides multiple acoustic measures to Voice Quality (VQ). It uses the Two-pass method for estimation f0 range adapted to each speaker; uses the cross-correlation method. The measurements are:
