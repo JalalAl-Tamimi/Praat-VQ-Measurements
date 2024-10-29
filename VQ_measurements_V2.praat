@@ -1,6 +1,10 @@
+## Version 1: 18 July 2024
+## Version 2: 20 October 2024. Uses the latest update in Praat's pitch analysis
+## Requires version 6.4 or above!
+
 beginPause: "computations"
 comment: "Where are your sound files and TextGrids?"
-sentence: "directory1", "D:\ArticlesResearch\GitHub_scripts\Praat\test_VQ"
+sentence: "directory1", ""
 comment: "Results File"
 sentence: "output1", "VQResults2"
 clicked = endPause: "OK", 1
@@ -36,31 +40,31 @@ for i from 1 to nbFiles
 	Read from file: "'directory1$'/'name$'.TextGrid"
 	selectObject: "Sound 'name$'"
 	#compute f0, two-passes
-	noprogress To Pitch (cc): 0.005, 50, 15, "yes", 0.03, 0.45, 0.01, 0.35, 0.14, 600
+	noprogress To Pitch (raw cross-correlation): 0.005, 50, 800, 15, "yes", 0.03, 0.45, 0.01, 0.35, 0.14
 	q1 = Get quantile: 0, 0, 0.25, "Hertz"
 	q3 = Get quantile: 0, 0, 0.75, "Hertz"
 	minPitch = q1*0.75
 	maxPitch = q3*1.5
 	Remove
 	selectObject: "Sound 'name$'"
-	noprogress To Pitch (cc): 0.005, minPitch, 15, "yes", 0.03, 0.45, 0.01, 0.35, 0.14, maxPitch
+	noprogress To Pitch (raw cross-correlation): 0.005, minPitch, maxPitch, 15, "yes", 0.03, 0.45, 0.01, 0.35, 0.14
 	selectObject: "Sound 'name$'"
 	noprogress To Harmonicity (cc): 0.005, minPitch, 0.1, 1
 	Rename: "'name$'_Full"
 	selectObject: "Sound 'name$'"
-	filt1 = Filter (pass Hann band): 0, 500, 100
+	filt1 = noprogress Filter (pass Hann band): 0, 500, 100
 	noprogress To Harmonicity (cc): 0.005, minPitch, 0.1, 1
 	Rename: "'name$'_500"
 	selectObject: "Sound 'name$'"
-	filt2 = Filter (pass Hann band): 0, 1500, 100
+	filt2 = noprogress Filter (pass Hann band): 0, 1500, 100
 	noprogress To Harmonicity (cc): 0.005, minPitch, 0.1, 1
 	Rename: "'name$'_1500"
 	selectObject: "Sound 'name$'"
-	filt3 = Filter (pass Hann band): 0, 2500, 100
+	filt3 = noprogress Filter (pass Hann band): 0, 2500, 100
 	noprogress To Harmonicity (cc): 0.005, minPitch, 0.1, 1
 	Rename: "'name$'_2500"
 	selectObject: "Sound 'name$'"
-	filt4 = Filter (pass Hann band): 0, 3500, 100
+	filt4 = noprogress Filter (pass Hann band): 0, 3500, 100
 	noprogress To Harmonicity (cc): 0.005, minPitch, 0.1, 1
 	Rename: "'name$'_3500"
 
@@ -72,7 +76,7 @@ for i from 1 to nbFiles
 
 	selectObject: "Sound 'name$'"
     plusObject: "Pitch 'name$'"
-    To PointProcess (cc)
+    noprogress To PointProcess (cc)
 	Rename: "'name$'"
 
 	
@@ -127,8 +131,8 @@ for i from 1 to nbFiles
 
 
 					selectObject: "Sound 'name$'"
-					part = Extract part... start end Rectangular 1 yes
-					spectrum = To Spectrum... yes
+					part = noprogress Extract part... start end Rectangular 1 yes
+					spectrum = noprogress To Spectrum... yes
 					energy1000 = Get band energy difference... 1000 10000 0 1000
 					energy2000 = Get band energy difference... 2000 10000 0 2000
 					energy4000 = Get band energy difference... 1000 4000 0 1000
@@ -138,18 +142,18 @@ for i from 1 to nbFiles
 					energyHigh = Get band energy... 4000 5000
 					bed = 10 * log10(energyLow / energyHigh)
 					select spectrum
-					ltas = To Ltas (1-to-1)
+					ltas = noprogress To Ltas (1-to-1)
 					slope = Get slope: 0, 1000, 1000, 10000, "dB"
 					trend = Compute trend line: 0, 10000
 					tilt = Get slope: 0, 1000, 1000, 10000, "dB"
 					select part
-					har_gne_3500 = To Harmonicity (gne)... 500 3500 1000 80
+					har_gne_3500 = noprogress To Harmonicity (gne)... 500 3500 1000 80
 					gne3500 = Get maximum
 					select part
-					har_gne_4500 = To Harmonicity (gne)... 500 4500 1000 80
+					har_gne_4500 = noprogress To Harmonicity (gne)... 500 4500 1000 80
 					gne4500 = Get maximum
 					select spectrum
-					powerCepst = To PowerCepstrum
+					powerCepst = noprogress To PowerCepstrum
 					cpp = Get peak prominence: 60, 333.3, "parabolic", 0.001, 0.05, "Exponential decay", "Robust slow"
 
 					select part
