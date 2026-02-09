@@ -12,7 +12,7 @@ if directory1$ = ""
 	directory1$ = chooseDirectory$("Select your directory of sound files and TextGrids")
 endif
 
-Create Strings as file list: "fileList", "'directory1$'\*.wav"
+Create Strings as file list: "fileList", "'directory1$'/*.wav"
 nbFiles = Get number of strings
 
 if fileReadable ("'output1$'.xls")
